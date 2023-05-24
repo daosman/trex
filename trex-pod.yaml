@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    k8s.v1.cni.cncf.io/networks: '[
+      {
+       "name": "sriov-nw-du-mh",
+       "mac": "50:00:00:00:00:01",
+       "namespace": "openshift-sriov-network-operator"
+      },
+      {
+       "name": "sriov-nw-du-fh",
+       "mac": "50:00:00:00:00:02",
+       "namespace": "openshift-sriov-network-operator"
+      }
+    ]'
+    cpu-load-balancing.crio.io: "disable"
+    cpu-quota.crio.io: "disable"
+    irq-load-balancing.crio.io: "disable"
+  labels:
+    app: trex
+  name: trex
+  namespace: dpdk
+spec:
+  runtimeClassName: performance-openshift-node-performance-profile
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - dpdk
+          topologyKey: kubernetes.io/hostname
+  containers:
+    - command:
+        - /bin/bash
+        - -c
+        - sleep INF
+      image: quay.io/dosman/trex:3.02
+      imagePullPolicy: Always
+      name: trex
+      envFrom:
+        - configMapRef:
+            name: trex-info-for-config
+      resources:
+        limits:
+          cpu: "16"
+          hugepages-1Gi: 8Gi
+          memory: 1Gi
+        requests:
+          cpu: "16"
+          hugepages-1Gi: 8Gi
+          memory: 1Gi
+      securityContext:
+
+        capabilities:
+          add:
+            - IPC_LOCK
+            - SYS_RESOURCE
+            - NET_RAW
+            - NET_ADMIN
+        runAsUser: 0
+      volumeMounts:
+        - name: trex-config-template
+          mountPath: /opt/templates/
+        - name: trex-tests
+          mountPath: /opt/tests/
+        - mountPath: /mnt/huge
+          name: hugepages
+        - name: modules
+          mountPath: /lib/modules
+  terminationGracePeriodSeconds: 5
+  volumes:
+    - name: modules
+      hostPath:
+        path: /lib/modules
+    - configMap:
+        name: trex-info-for-config
+      name: trex-info-for-config
+    - name: trex-config-template
+      configMap:
+        name: trex-config-template
+    - name: trex-tests
+      configMap:
+        name: trex-tests
+    - emptyDir:
+        medium: HugePages
+      name: hugepages
+

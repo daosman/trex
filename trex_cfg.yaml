@@ -1,0 +1,17 @@
+- port_limit: 2
+  version: 2
+  interfaces:
+    - "0000:51:11.3"
+    - "0000:51:01.7"
+  port_bandwidth_gb: 25
+  port_info:
+    - dest_mac        :   [0x60,0x0,0x0,0x1,0x0,0x2]
+      src_mac         :   [0x50,0x0,0x0,0x2,0x0,0x2]
+    - dest_mac        :   [0x60,0x0,0x0,0x3,0x0,0x1]
+      src_mac         :   [0x50,0x0,0x0,0x4,0x0,0x1]
+  platform:
+    master_thread_id: 10
+    latency_thread_id: 34
+    dual_if:
+      - socket: 0
+        threads: [11,12,13,14,15,16,17,35,36,37,38,39,40,41]
