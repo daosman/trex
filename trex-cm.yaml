@@ -41,11 +41,17 @@ data:
   testpmd.py : |
     from trex_stl_lib.api import *
 
-    from testpmd_addr import *
-
     # Wild local MACs
     mac_localport0='50:00:00:00:00:01'
     mac_localport1='50:00:00:00:00:02'
+
+    # wild second XL710 mac
+    mac_telco0 = '60:00:00:00:00:01'
+    # we don’t care of the IP in this phase
+    ip_telco0  = '10.0.0.1'
+    # wild first XL710 mac
+    mac_telco1 = '60:00:00:00:00:02'
+    ip_telco1 = '10.1.1.1'
 
     class STLS1(object):
 
@@ -105,14 +111,5 @@ data:
     # dynamic load - used for trex console or simulator
     def register():
         return STLS1()
-
-    testpmd_addr.py: |
-    # wild second XL710 mac
-    mac_telco0 = '60:00:00:00:00:01'
-    # we don’t care of the IP in this phase
-    ip_telco0  = '10.0.0.1'
-    # wild first XL710 mac
-    mac_telco1 = '60:00:00:00:00:02'
-    ip_telco1 = '10.1.1.1'
 ---
 

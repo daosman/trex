@@ -14,4 +14,7 @@ RUN wget --no-check-certificate https://trex-tgn.cisco.com/trex/release/v${TREX_
    mv v${TREX_VERSION} trex && \
    rm v${TREX_VERSION}.tar.gz
 
+COPY ./run.sh /usr/bin/run.sh
+RUN chmod +x /usr/bin/run.sh
+
 WORKDIR /opt/trex

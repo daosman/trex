@@ -6,12 +6,12 @@ metadata:
     k8s.v1.cni.cncf.io/networks: '[
           {
             "mac": "60:00:00:00:00:01",
-            "name": "sriov-nw-du-mh",
+            "name": "sriov-nw-du-fh",
             "namespace": "openshift-sriov-network-operator"
           },
           {
             "mac": "60:00:00:00:00:02",
-            "name": "sriov-nw-du-fh",
+            "name": "sriov-nw-du-mh",
             "namespace": "openshift-sriov-network-operator"
           }
         ]'
@@ -31,10 +31,16 @@ spec:
     env:
     - name: FORWARD_MODE
       value: "mac"
+    - name: FOWARD_MODE
+      value: "mac"
     - name: SRIOV_ID_A
-      value: "DU_MH"
-    - name: SRIOV_ID_B
       value: "DU_FH"
+    - name: SRIOV_ID_B
+      value: "DU_MH"
+    - name: PEER_A_MAC
+      value: "50:00:00:00:00:01"
+    - name: PEER_B_MAC
+      value: "50:00:00:00:00:02"
     securityContext:
       runAsUser: 0
       capabilities:
