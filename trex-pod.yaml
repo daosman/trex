@@ -40,6 +40,15 @@ spec:
         - sleep INF
       image: quay.io/dosman/trex:3.02
       imagePullPolicy: Always
+      env:
+      - name: PORT0_MAC
+        value: "50:00:00:00:00:01"
+      - name: PORT1_MAC
+        value: "50:00:00:00:00:02"
+      - name: PORT0_PEER_MAC
+        value: "60:00:00:00:00:01"
+      - name: PORT1_PEER_MAC
+        value: "60:00:00:00:00:02"
       name: trex
       envFrom:
         - configMapRef:
